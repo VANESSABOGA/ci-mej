@@ -4,6 +4,7 @@
 
 const TOTAL_STEPS = 6;
 const MAX_CHILDREN = 12;
+const WEB3FORMS_KEY = "42f261f7-14f9-46fa-9f55-4f6c3f406519";
 
 /* ---------- Données de remplissage ---------- */
 const DATA = {
@@ -77,7 +78,7 @@ const errorList = $("#error-summary-list");
 const recapEl = $("#recap");
 const submitStatus = $("#submit-status");
 
-/* ---------- Pointeur renderChildren (rempli par bindChildren) ---------- */
+/* ---------- Pointeur renderChildren ---------- */
 let renderChildren = () => {};
 let turnstileRendered = false;
 
@@ -243,7 +244,6 @@ function validateStep(stepNum) {
     }
   });
 
-  // Validation des enfants
   if (stepNum === 4) {
     state.children.forEach((child) => {
       ["nom", "prenoms", "date_naissance", "niveau_scolaire"].forEach(
@@ -257,7 +257,6 @@ function validateStep(stepNum) {
           }
         },
       );
-      // Date de naissance enfant : pas dans le futur
       if (child.date_naissance) {
         const d = new Date(child.date_naissance);
         if (isNaN(d.getTime()) || d > new Date()) {
@@ -432,7 +431,6 @@ function getFieldLabel(el) {
    CHAMPS CONDITIONNELS
    ============================================ */
 function bindConditionalFields() {
-  // WhatsApp
   const waCheck = $("#whatsapp_identique");
   const waBlock = $("#bloc-whatsapp");
   const waInput = $("#whatsapp");
@@ -443,7 +441,6 @@ function bindConditionalFields() {
     if (same) waInput.value = "";
   });
 
-  // Situation professionnelle "autre"
   const sitRadios = $$('input[name="situation_professionnelle"]');
   const sitAutre = $("#bloc-situation-autre");
   const sitAutreInput = $("#situation_professionnelle_autre");
@@ -456,7 +453,6 @@ function bindConditionalFields() {
     }),
   );
 
-  // Situation matrimoniale → conjoint
   const matRadios = $$('input[name="situation_matrimoniale"]');
   const blocConjoint = $("#bloc-conjoint");
   const conjointNom = $("#conjoint_nom");
@@ -476,7 +472,6 @@ function bindConditionalFields() {
     }),
   );
 
-  // Conjoint membre du mouvement
   const conjMembreRadios = $$('input[name="conjoint_membre"]');
   const blocConjointEglise = $("#bloc-conjoint-eglise");
   const conjointEglise = $("#conjoint_eglise");
@@ -489,7 +484,6 @@ function bindConditionalFields() {
     }),
   );
 
-  // Enfants oui/non
   const enfantsRadios = $$('input[name="a_enfants"]');
   const blocEnfants = $("#bloc-enfants");
   enfantsRadios.forEach((r) =>
@@ -503,7 +497,6 @@ function bindConditionalFields() {
     }),
   );
 
-  // Sous tutelle
   const tutelleRadios = $$('input[name="sous_tutelle"]');
   const blocTutelle = $("#bloc-tutelle");
   const lienTuteur = $("#lien_tuteur");
@@ -519,7 +512,6 @@ function bindConditionalFields() {
     }),
   );
 
-  // Lien tuteur "autre"
   lienTuteur?.addEventListener("change", () => {
     const isAutre = lienTuteur.value === "autre";
     const bloc = $("#bloc-lien-autre");
@@ -529,7 +521,6 @@ function bindConditionalFields() {
     if (!isAutre && input) input.value = "";
   });
 
-  // Église "Autres" → champ de précision
   const egliseSelect = $("#eglise");
   const blocEgliseAutre = $("#bloc-eglise-autre");
   const egliseAutreInput = $("#eglise_autre");
@@ -540,7 +531,6 @@ function bindConditionalFields() {
     if (!isAutre && egliseAutreInput) egliseAutreInput.value = "";
   });
 
-  // Baptême → date de baptême
   const baptiseRadios = $$('input[name="baptise"]');
   const blocDateBapteme = $("#bloc-date-bapteme");
   baptiseRadios.forEach((r) =>
@@ -862,50 +852,29 @@ function buildRecap() {
 }
 
 /* ============================================
-   TURNSTILE (Cloudflare)
+   TURNSTILE (Cloudflare) — désactivé sans clé
    ============================================ */
 function initTurnstile() {
   const container = $("#turnstile-container");
   if (!container || typeof turnstile === "undefined") return;
   if (turnstileRendered) return;
 
-  const render = () => {
-    if (turnstileRendered) return;
-    try {
-      turnstile.render(container, {
-        sitekey: "VOTRE_SITE_KEY_CLOUDFLARE", // ⚠️ à remplacer
-        theme: "light",
-        callback: (token) => {
-          state.turnstileToken = token;
-        },
-        "expired-callback": () => {
-          state.turnstileToken = null;
-        },
-        "error-callback": () => {
-          state.turnstileToken = null;
-        },
-      });
-      turnstileRendered = true;
-    } catch (err) {
-      console.warn("Turnstile non initialisé :", err);
-    }
-  };
-
-  if (window.turnstile) render();
-  else window.addEventListener("load", render, { once: true });
+  // ⚠️ Turnstile est optionnel avec Web3Forms (qui a son propre anti-spam).
+  // Ne pas initialiser pour éviter une clé "VOTRE_SITE_KEY_CLOUDFLARE" invalide.
+  return;
 }
 
 /* ============================================
-   SOUMISSION
+   SOUMISSION — Web3Forms
    ============================================ */
 function bindSubmit() {
-
-    alert("ffffffffffffffff")
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (state.submitting) return;
 
+    // Validation finale
     if (!validateStep(TOTAL_STEPS)) return;
+
     const consent = $("#consentement_confidentialite");
     if (consent && !consent.checked) {
       showErrors([
@@ -917,17 +886,6 @@ function bindSubmit() {
       return;
     }
 
-
-    // if (!state.turnstileToken) {
-    //   showErrors([
-    //     {
-    //       el: $("#turnstile-container"),
-    //       message: "Veuillez valider la vérification anti-robot.",
-    //     },
-    //   ]);
-    //   return;
-    // }
-
     state.submitting = true;
     btnSubmit.classList.add("is-loading");
     btnSubmit.disabled = true;
@@ -936,9 +894,8 @@ function bindSubmit() {
     try {
       const payload = collectPayload();
 
-      console.log(payload);
-
-      const response = await fetch("/api/recensement", {
+      // Envoi vers Web3Forms
+      const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -947,14 +904,18 @@ function bindSubmit() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.message || `Erreur serveur (${response.status})`);
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || `Erreur serveur (${response.status})`,
+        );
       }
 
+      // Succès : redirection
       window.location.href = "merci.html";
     } catch (err) {
-      console.error(err);
+      console.error("Erreur d'envoi :", err);
       submitStatus.textContent = "Échec de l'envoi : " + err.message;
       showErrors([
         {
@@ -969,90 +930,130 @@ function bindSubmit() {
   });
 }
 
+/* ---------- Construction du payload (aplati pour Web3Forms) ---------- */
 function collectPayload() {
-  const payload = {
+  const identite = {
+    nom: val("nom"),
+    prenoms: val("prenoms"),
+    sexe: checked("sexe"),
+    date_naissance: val("date_naissance"),
+    nationalite: val("nationalite"),
+  };
+
+  const coordonnees = {
+    telephone_indicatif: val("telephone_indicatif"),
+    telephone_numero: val("telephone"),
+    whatsapp_identique: $("#whatsapp_identique")?.checked ?? false,
+    whatsapp_indicatif: $("#whatsapp_identique")?.checked
+      ? null
+      : val("whatsapp_indicatif"),
+    whatsapp_numero: $("#whatsapp_identique")?.checked
+      ? null
+      : val("whatsapp"),
+    email: val("email") || null,
+    pays_residence: val("pays_residence"),
+    ville_residence: val("ville_residence"),
+  };
+
+  const eglise_parcours = {
+    eglise: val("eglise"),
+    eglise_autre:
+      val("eglise") === "Autres" ? val("eglise_autre") || null : null,
+    communaute: val("communaute") || null,
+    fonction_mouvement: val("fonction_mouvement") || null,
+    baptise: checked("baptise"),
+    date_bapteme: val("date_bapteme") || null,
+    date_arrivee: val("date_arrivee") || null,
+    niveau_etudes: val("niveau_etudes"),
+    situation_professionnelle: checked("situation_professionnelle"),
+    situation_professionnelle_autre:
+      val("situation_professionnelle_autre") || null,
+    profession: val("profession") || null,
+  };
+
+  const conjointHidden = $("#bloc-conjoint")?.hidden;
+  const famille = {
+    situation_matrimoniale: checked("situation_matrimoniale"),
+    conjoint_nom: conjointHidden ? null : val("conjoint_nom"),
+    conjoint_prenoms: conjointHidden ? null : val("conjoint_prenoms"),
+    conjoint_telephone_indicatif: conjointHidden
+      ? null
+      : val("conjoint_telephone_indicatif"),
+    conjoint_telephone_numero: conjointHidden
+      ? null
+      : val("conjoint_telephone"),
+    conjoint_membre_mouvement: conjointHidden
+      ? null
+      : checked("conjoint_membre"),
+    conjoint_eglise: conjointHidden ? null : val("conjoint_eglise") || null,
+    a_enfants: checked("a_enfants"),
+    enfants:
+      checked("a_enfants") === "oui"
+        ? state.children.map((c, i) => ({
+            [`enfant_${i + 1}_nom`]: c.nom,
+            [`enfant_${i + 1}_prenoms`]: c.prenoms,
+            [`enfant_${i + 1}_date_naissance`]: c.date_naissance,
+            [`enfant_${i + 1}_niveau_scolaire`]: c.niveau_scolaire,
+          }))
+        : [],
+  };
+
+  const mineurHidden = $("#bloc-mineur")?.hidden;
+  const tutelle = {
+    sous_tutelle: checked("sous_tutelle"),
+    lien_tuteur: val("lien_tuteur") || null,
+    lien_tuteur_autre: val("lien_tuteur_autre") || null,
+    responsable_nom_complet: mineurHidden
+      ? null
+      : val("responsable_nom_complet"),
+    responsable_telephone_indicatif: mineurHidden
+      ? null
+      : val("responsable_telephone_indicatif"),
+    responsable_telephone_numero: mineurHidden
+      ? null
+      : val("responsable_telephone"),
+    consentement_parental: mineurHidden
+      ? null
+      : $("#consentement_parental")?.checked ?? false,
+  };
+
+  // Aplatissement : { identite: { nom } } → { "identite.nom": ... }
+  const flat = {
+    access_key: WEB3FORMS_KEY,
+    subject: `Nouveau recensement — ${identite.prenoms || ""} ${identite.nom || ""}`.trim(),
+    from_name: "Formulaire de recensement CI-MEJ",
     submission_id: $("#submission_id")?.value || "",
-    site_web: $("#site_web")?.value || "",
-    turnstile_token: state.turnstileToken,
-    identite: {
-      nom: val("nom"),
-      prenoms: val("prenoms"),
-      sexe: checked("sexe"),
-      date_naissance: val("date_naissance"),
-      nationalite: val("nationalite"),
-    },
-    coordonnees: {
-      telephone: {
-        indicatif: val("telephone_indicatif"),
-        numero: val("telephone"),
-      },
-      whatsapp_identique: $("#whatsapp_identique")?.checked ?? false,
-      whatsapp: $("#whatsapp_identique")?.checked
-        ? null
-        : { indicatif: val("whatsapp_indicatif"), numero: val("whatsapp") },
-      email: val("email") || null,
-      pays_residence: val("pays_residence"),
-      ville_residence: val("ville_residence"),
-    },
-    eglise_parcours: {
-      eglise: val("eglise"),
-      eglise_autre:
-        val("eglise") === "Autres" ? val("eglise_autre") || null : null,
-      communaute: val("communaute") || null,
-      fonction_mouvement: val("fonction_mouvement") || null,
-      baptise: checked("baptise"),
-      date_bapteme: val("date_bapteme") || null,
-      date_arrivee: val("date_arrivee") || null,
-      niveau_etudes: val("niveau_etudes"),
-      situation_professionnelle: checked("situation_professionnelle"),
-      situation_professionnelle_autre:
-        val("situation_professionnelle_autre") || null,
-      profession: val("profession") || null,
-    },
-    famille: {
-      situation_matrimoniale: checked("situation_matrimoniale"),
-      conjoint: $("#bloc-conjoint")?.hidden
-        ? null
-        : {
-            nom: val("conjoint_nom"),
-            prenoms: val("conjoint_prenoms"),
-            telephone: {
-              indicatif: val("conjoint_telephone_indicatif"),
-              numero: val("conjoint_telephone"),
-            },
-            membre_mouvement: checked("conjoint_membre"),
-            eglise: val("conjoint_eglise") || null,
-          },
-      a_enfants: checked("a_enfants"),
-      enfants:
-        checked("a_enfants") === "oui"
-          ? state.children.map((c) => ({
-              nom: c.nom,
-              prenoms: c.prenoms,
-              date_naissance: c.date_naissance,
-              niveau_scolaire: c.niveau_scolaire,
-            }))
-          : [],
-    },
-    tutelle: {
-      sous_tutelle: checked("sous_tutelle"),
-      lien_tuteur: val("lien_tuteur") || null,
-      lien_tuteur_autre: val("lien_tuteur_autre") || null,
-      responsable: $("#bloc-mineur")?.hidden
-        ? null
-        : {
-            nom_complet: val("responsable_nom_complet"),
-            telephone: {
-              indicatif: val("responsable_telephone_indicatif"),
-              numero: val("responsable_telephone"),
-            },
-            consentement_parental:
-              $("#consentement_parental")?.checked ?? false,
-          },
-    },
     consentement_confidentialite:
       $("#consentement_confidentialite")?.checked ?? false,
   };
+
+  const flatten = (obj, prefix = "") => {
+    for (const [k, v] of Object.entries(obj)) {
+      if (v === null || v === undefined) {
+        flat[prefix + k] = "";
+        continue;
+      }
+      if (Array.isArray(v)) {
+        v.forEach((item, i) => {
+          if (typeof item === "object" && item !== null) {
+            flatten(item, `${prefix}${k}_${i + 1}.`);
+          } else {
+            flat[`${prefix}${k}_${i + 1}`] = item;
+          }
+        });
+        continue;
+      }
+      if (typeof v === "object") {
+        flatten(v, `${prefix}${k}.`);
+        continue;
+      }
+      flat[prefix + k] = v;
+    }
+  };
+
+  flatten({ identite, coordonnees, eglise_parcours, famille, tutelle });
+
+  return flat;
 
   function val(name) {
     return form.elements[name]?.value || "";
@@ -1060,8 +1061,6 @@ function collectPayload() {
   function checked(name) {
     return form.querySelector(`input[name="${name}"]:checked`)?.value || null;
   }
-
-  return payload;
 }
 
 /* ============================================
