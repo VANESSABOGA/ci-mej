@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion – Administration du recensement</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script type="module" src="../assets/js/admin/login.js"></script>
+</head>
+<body class="page-auth">
+  <main class="auth-card" id="contenu">
+    <img class="auth-card__logo" src="../assets/img/logo.svg" alt="" width="56" height="56">
+    <h1 class="auth-card__title">Administration du recensement</h1>
+    <p class="auth-card__intro">Accès réservé aux responsables autorisés. Chaque connexion est enregistrée.</p>
+
+    <div id="login-error" class="alert alert--error" role="alert" hidden></div>
+    <div id="login-info" class="alert alert--info" role="status" hidden></div>
+
+    <form id="login-form" class="auth-form" novalidate>
+      <div class="field">
+        <label for="email">Adresse e-mail</label>
+        <input id="email" name="email" type="email" autocomplete="username" inputmode="email" maxlength="254" required autofocus>
+      </div>
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <div class="password">
+          <input id="password" name="password" type="password" autocomplete="current-password" maxlength="128" required>
+          <button type="button" class="password__toggle" id="toggle-password" aria-controls="password" aria-pressed="false">Afficher</button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn--primary btn--block" id="btn-login">
+        <span class="btn__label">Se connecter</span>
+        <span class="spinner" aria-hidden="true"></span>
+      </button>
+    </form>
+
+    <p class="auth-card__help">Mot de passe oublié ? Contactez un super-administrateur du mouvement.</p>
+    <p class="auth-card__back"><a href="../index.html">Retour au formulaire public</a></p>
+  </main>
+</body>
+</html>

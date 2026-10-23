@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche participant – Administration du recensement</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script type="module" src="../assets/js/admin/participant.js"></script>
+</head>
+<body class="page-admin">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <div class="app-loader" id="app-loader" role="status">
+    <span class="spinner spinner--lg" aria-hidden="true"></span>
+    <span>Vérification de la session…</span>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <header class="admin-header">
+      <a class="admin-header__brand" href="tableau-de-bord.html">
+        <img src="../assets/img/logo.svg" alt="" width="32" height="32">
+        <span>Recensement des jeunes</span>
+      </a>
+      <button type="button" class="admin-header__toggle" id="nav-toggle" aria-expanded="false" aria-controls="admin-nav">Menu</button>
+      <nav class="admin-nav" id="admin-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
+          <li><a href="participants.html" aria-current="page">Participants</a></li>
+        </ul>
+        <div class="admin-user">
+          <span class="admin-user__email" id="admin-email"></span>
+          <span class="badge badge--role" id="admin-role"></span>
+          <button type="button" class="btn btn--ghost btn--sm" id="btn-logout">Se déconnecter</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin-main" id="contenu" tabindex="-1">
+      <nav class="breadcrumb" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="participants.html" id="back-link">Participants</a></li>
+          <li aria-current="page" id="breadcrumb-name">Fiche</li>
+        </ol>
+      </nav>
+
+      <div id="page-error" class="alert alert--error" role="alert" hidden></div>
+      <div id="page-info" class="alert alert--success" role="status" hidden></div>
+
+      <div id="participant-loading" class="panel panel--center" role="status">
+        <span class="spinner" aria-hidden="true"></span> Chargement de la fiche…
+      </div>
+
+      <div id="participant-content" hidden>
+        <div class="page-head">
+          <div>
+            <h1 class="page-head__title" id="participant-name"></h1>
+            <p class="page-head__meta" id="participant-meta"></p>
+            <div class="badges" id="participant-badges"></div>
+          </div>
+          <div class="page-head__actions">
+            <button type="button" class="btn btn--primary btn--sm" id="btn-edit" data-role-min="editeur" hidden>Modifier la fiche</button>
+            <button type="button" class="btn btn--danger btn--sm" id="btn-delete" data-role-min="super_admin" hidden>Supprimer le dossier</button>
+          </div>
+        </div>
+
+        <div class="alert alert--warning" id="alert-doublon" hidden>
+          Doublon probable : un autre dossier porte les mêmes nom, prénoms et date de naissance.
+          <a href="#" id="link-doublons">Voir les dossiers concernés</a>
+        </div>
+
+        <!-- ═══ Mode consultation : les listes sont remplies par participant.js ═══ -->
+        <div id="detail-view" class="detail">
+          <section class="panel" aria-labelledby="d-identite">
+            <h2 class="panel__title" id="d-identite">Identité</h2>
+            <dl class="detail-list" id="dl-identite"></dl>
+          </section>
+
+          <section class="panel" aria-labelledby="d-coordonnees">
+            <h2 class="panel__title" id="d-coordonnees">Coordonnées</h2>
+            <dl class="detail-list" id="dl-coordonnees"></dl>
+          </section>
+
+          <section class="panel" aria-labelledby="d-parcours">
+            <h2 class="panel__title" id="d-parcours">Église et parcours</h2>
+            <dl class="detail-list" id="dl-parcours"></dl>
+          </section>
+
+          <section class="panel" aria-labelledby="d-famille">
+            <h2 class="panel__title" id="d-famille">Situation matrimoniale et conjoint</h2>
+            <dl class="detail-list" id="dl-famille"></dl>
+          </section>
+
+          <section class="panel panel--wide" aria-labelledby="d-enfants">
+            <h2 class="panel__title" id="d-enfants">Enfants</h2>
+            <div class="table-wrap" tabindex="0" role="region" aria-labelledby="d-enfants">
+              <table class="table table--compact">
+                <thead>
+                  <tr>
+                    <th scope="col">Nom et prénoms</th>
+                    <th scope="col">Date de naissance</th>
+                    <th scope="col">Âge</th>
+                    <th scope="col">Niveau scolaire</th>
+                  </tr>
+                </thead>
+                <tbody id="enfants-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="d-tutelle">
+            <h2 class="panel__title" id="d-tutelle">Tutelle et accord parental</h2>
+            <dl class="detail-list" id="dl-tutelle"></dl>
+          </section>
+
+          <section class="panel" aria-labelledby="d-consentement">
+            <h2 class="panel__title" id="d-consentement">Consentement et suivi</h2>
+            <dl class="detail-list" id="dl-consentement"></dl>
+          </section>
+
+          <section class="panel panel--wide" aria-labelledby="d-historique">
+            <h2 class="panel__title" id="d-historique">Historique des actions</h2>
+            <ol class="timeline" id="audit-list"></ol>
+          </section>
+        </div>
+
+        <!-- ═══ Mode modification : les champs sont générés par participant.js à partir de shared/schema.js ═══ -->
+        <form id="edit-form" class="edit-form" novalidate hidden>
+          <div id="edit-error-summary" class="error-summary" role="alert" tabindex="-1" hidden>
+            <h2 class="error-summary__title">Corrigez les points suivants avant d'enregistrer</h2>
+            <ul class="error-summary__list" id="edit-error-list"></ul>
+          </div>
+
+          <div id="edit-sections"></div>
+
+          <section class="panel panel--wide" aria-labelledby="e-enfants">
+            <div class="panel__head">
+              <h2 class="panel__title" id="e-enfants">Enfants</h2>
+              <p class="counter" id="edit-enfants-compteur" aria-live="polite"></p>
+            </div>
+            <div id="edit-enfants-list" class="children-list"></div>
+            <button type="button" class="btn btn--outline btn--sm" id="btn-edit-add-enfant">+ Ajouter un enfant</button>
+          </section>
+
+          <div class="form-nav form-nav--sticky">
+            <button type="button" class="btn btn--ghost" id="btn-cancel-edit">Annuler</button>
+            <button type="submit" class="btn btn--success" id="btn-save">
+              <span class="btn__label">Enregistrer les modifications</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="dialog" id="dlg-delete" aria-labelledby="dlg-delete-title" aria-describedby="dlg-delete-desc">
+    <form method="dialog" class="dialog__body" id="form-delete">
+      <h2 class="dialog__title" id="dlg-delete-title">Supprimer ce dossier ?</h2>
+      <p id="dlg-delete-desc">Le dossier de <strong id="dlg-delete-name"></strong> et les informations sur ses enfants seront définitivement supprimés. Cette action ne peut pas être annulée.</p>
+      <div class="field">
+        <label for="delete-confirm">Pour confirmer, tapez <strong>SUPPRIMER</strong></label>
+        <input id="delete-confirm" type="text" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="field">
+        <label for="delete-motif">Motif de la suppression</label>
+        <select id="delete-motif">
+          <option value="demande_personne">Demande de la personne concernée</option>
+          <option value="doublon">Doublon</option>
+          <option value="erreur_saisie">Erreur de saisie ou faux dossier</option>
+          <option value="fin_conservation">Fin de la durée de conservation</option>
+        </select>
+      </div>
+      <div class="dialog__actions">
+        <button type="submit" value="cancel" class="btn btn--ghost">Annuler</button>
+        <button type="button" class="btn btn--danger" id="btn-confirm-delete" disabled>Supprimer définitivement</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="tpl-edit-enfant">
+    <fieldset class="child-card" data-child>
+      <legend class="child-card__title">Enfant <span data-child-index>1</span></legend>
+      <input type="hidden" data-field="id">
+      <div class="grid grid--4">
+        <div class="field">
+          <label data-label-for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" data-field="nom" maxlength="100" required>
+        </div>
+        <div class="field">
+          <label data-label-for="prenoms">Prénoms <span class="req" aria-hidden="true">*</span></label>
+          <input type="text" data-field="prenoms" maxlength="150" required>
+        </div>
+        <div class="field">
+          <label data-label-for="date_naissance">Date de naissance <span class="req" aria-hidden="true">*</span></label>
+          <input type="date" data-field="date_naissance" required>
+        </div>
+        <div class="field">
+          <label data-label-for="niveau_scolaire">Niveau scolaire <span class="req" aria-hidden="true">*</span></label>
+          <select data-field="niveau_scolaire" required>
+            <option value="">Choisissez</option>
+            <option value="non_scolarise">Non scolarisé</option>
+            <option value="prescolaire">Préscolaire</option>
+            <option value="primaire">Primaire</option>
+            <option value="college">Collège</option>
+            <option value="lycee">Lycée</option>
+            <option value="formation_pro">Formation professionnelle</option>
+            <option value="superieur">Enseignement supérieur</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="btn btn--danger-ghost btn--sm" data-remove-child>Retirer cet enfant</button>
+    </fieldset>
+  </template>
+</body>
+</html>

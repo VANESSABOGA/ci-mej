@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Participants – Administration du recensement</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script type="module" src="../assets/js/admin/participants.js"></script>
+</head>
+<body class="page-admin">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <div class="app-loader" id="app-loader" role="status">
+    <span class="spinner spinner--lg" aria-hidden="true"></span>
+    <span>Vérification de la session…</span>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <header class="admin-header">
+      <a class="admin-header__brand" href="tableau-de-bord.html">
+        <img src="../assets/img/logo.svg" alt="" width="32" height="32">
+        <span>Recensement des jeunes</span>
+      </a>
+      <button type="button" class="admin-header__toggle" id="nav-toggle" aria-expanded="false" aria-controls="admin-nav">Menu</button>
+      <nav class="admin-nav" id="admin-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="tableau-de-bord.html">Tableau de bord</a></li>
+          <li><a href="participants.html" aria-current="page">Participants</a></li>
+        </ul>
+        <div class="admin-user">
+          <span class="admin-user__email" id="admin-email"></span>
+          <span class="badge badge--role" id="admin-role"></span>
+          <button type="button" class="btn btn--ghost btn--sm" id="btn-logout">Se déconnecter</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin-main" id="contenu" tabindex="-1">
+      <div class="page-head">
+        <h1 class="page-head__title">Participants</h1>
+        <div class="page-head__actions" data-role-min="editeur" hidden>
+          <button type="button" class="btn btn--outline btn--sm" id="btn-export-participants">Exporter les participants (CSV)</button>
+          <button type="button" class="btn btn--outline btn--sm" id="btn-export-enfants">Exporter les enfants (CSV)</button>
+        </div>
+      </div>
+
+      <div id="page-error" class="alert alert--error" role="alert" hidden></div>
+      <div id="page-info" class="alert alert--success" role="status" hidden></div>
+
+      <form class="filters" id="filters-form" role="search" aria-label="Rechercher et filtrer les participants">
+        <div class="filters__search">
+          <label for="f-q">Rechercher</label>
+          <input id="f-q" name="q" type="search" maxlength="100" placeholder="Nom, prénoms, téléphone ou e-mail">
+        </div>
+
+        <details class="filters__more" id="filters-more">
+          <summary>Filtres avancés <span class="badge badge--count" id="filters-count" hidden></span></summary>
+          <div class="filters__grid">
+            <div class="field">
+              <label for="f-sexe">Sexe</label>
+              <select id="f-sexe" name="sexe">
+                <option value="">Tous</option>
+                <option value="M">Masculin</option>
+                <option value="F">Féminin</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-tranche">Tranche d'âge</label>
+              <select id="f-tranche" name="tranche_age">
+                <option value="">Toutes</option>
+                <option value="moins_15">Moins de 15 ans</option>
+                <option value="15_17">15 à 17 ans</option>
+                <option value="18_24">18 à 24 ans</option>
+                <option value="25_30">25 à 30 ans</option>
+                <option value="31_35">31 à 35 ans</option>
+                <option value="plus_35">Plus de 35 ans</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-pays">Pays de résidence</label>
+              <select id="f-pays" name="pays_residence" data-options="pays">
+                <option value="">Tous</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-ville">Ville</label>
+              <select id="f-ville" name="ville_residence" data-options="villes">
+                <option value="">Toutes</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-eglise">Église</label>
+              <select id="f-eglise" name="eglise" data-options="eglises">
+                <option value="">Toutes</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-pro">Situation professionnelle</label>
+              <select id="f-pro" name="situation_professionnelle">
+                <option value="">Toutes</option>
+                <option value="eleve">Élève</option>
+                <option value="etudiant">Étudiant(e)</option>
+                <option value="salarie">Salarié(e)</option>
+                <option value="entrepreneur">Entrepreneur(e)</option>
+                <option value="sans_emploi">Sans emploi</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-matri">Situation matrimoniale</label>
+              <select id="f-matri" name="situation_matrimoniale">
+                <option value="">Toutes</option>
+                <option value="celibataire">Célibataire</option>
+                <option value="marie">Marié(e)</option>
+                <option value="en_union">En union</option>
+                <option value="divorce">Divorcé(e)</option>
+                <option value="veuf">Veuf / Veuve</option>
+                <option value="non_precise">Non précisé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-enfants">Enfants</label>
+              <select id="f-enfants" name="a_enfants">
+                <option value="">Tous</option>
+                <option value="oui">Avec enfants</option>
+                <option value="non">Sans enfant</option>
+                <option value="non_precise">Non précisé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-mineur">Âge légal</label>
+              <select id="f-mineur" name="mineur">
+                <option value="">Tous</option>
+                <option value="oui">Mineurs uniquement</option>
+                <option value="non">Majeurs uniquement</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-doublon">Doublons probables</label>
+              <select id="f-doublon" name="doublon">
+                <option value="">Tous</option>
+                <option value="oui">Afficher seulement les doublons probables</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-du">Recensé à partir du</label>
+              <input id="f-du" name="cree_du" type="date">
+            </div>
+            <div class="field">
+              <label for="f-au">Recensé jusqu'au</label>
+              <input id="f-au" name="cree_au" type="date">
+            </div>
+          </div>
+        </details>
+
+        <div class="filters__actions">
+          <div class="field field--inline">
+            <label for="f-tri">Trier par</label>
+            <select id="f-tri" name="tri">
+              <option value="created_at.desc">Plus récents d'abord</option>
+              <option value="created_at.asc">Plus anciens d'abord</option>
+              <option value="nom.asc">Nom (A à Z)</option>
+              <option value="nom.desc">Nom (Z à A)</option>
+              <option value="date_naissance.desc">Plus jeunes d'abord</option>
+              <option value="date_naissance.asc">Plus âgés d'abord</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn--primary btn--sm">Appliquer</button>
+          <button type="reset" class="btn btn--ghost btn--sm" id="btn-reset">Réinitialiser</button>
+        </div>
+      </form>
+
+      <p class="results-count" id="results-count" role="status" aria-live="polite"></p>
+
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="table-caption">
+        <table class="table" id="participants-table">
+          <caption id="table-caption" class="sr-only">Liste des participants</caption>
+          <thead>
+            <tr>
+              <th scope="col">Nom et prénoms</th>
+              <th scope="col">Sexe</th>
+              <th scope="col">Âge</th>
+              <th scope="col">Téléphone</th>
+              <th scope="col">Ville, pays</th>
+              <th scope="col">Église</th>
+              <th scope="col">Situation</th>
+              <th scope="col">Recensé le</th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody id="participants-body">
+            <tr class="table__placeholder"><td colspan="9">Chargement…</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="pagination" id="pagination" aria-label="Pagination" hidden>
+        <button type="button" class="btn btn--ghost btn--sm" id="page-prev">Page précédente</button>
+        <p class="pagination__info" id="page-info-text"></p>
+        <button type="button" class="btn btn--ghost btn--sm" id="page-next">Page suivante</button>
+        <div class="field field--inline">
+          <label for="page-size">Par page</label>
+          <select id="page-size">
+            <option value="25">25</option>
+            <option value="50" selected>50</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

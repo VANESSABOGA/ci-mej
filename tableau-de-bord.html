@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord – Administration du recensement</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin.css">
+  <script type="module" src="../assets/js/admin/dashboard.js"></script>
+</head>
+<body class="page-admin">
+  <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+  <div class="app-loader" id="app-loader" role="status">
+    <span class="spinner spinner--lg" aria-hidden="true"></span>
+    <span>Vérification de la session…</span>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <header class="admin-header">
+      <a class="admin-header__brand" href="tableau-de-bord.html">
+        <img src="../assets/img/logo.svg" alt="" width="32" height="32">
+        <span>Recensement des jeunes</span>
+      </a>
+      <button type="button" class="admin-header__toggle" id="nav-toggle" aria-expanded="false" aria-controls="admin-nav">Menu</button>
+      <nav class="admin-nav" id="admin-nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="tableau-de-bord.html" aria-current="page">Tableau de bord</a></li>
+          <li><a href="participants.html">Participants</a></li>
+        </ul>
+        <div class="admin-user">
+          <span class="admin-user__email" id="admin-email"></span>
+          <span class="badge badge--role" id="admin-role"></span>
+          <button type="button" class="btn btn--ghost btn--sm" id="btn-logout">Se déconnecter</button>
+        </div>
+      </nav>
+    </header>
+
+    <main class="admin-main" id="contenu" tabindex="-1">
+      <div class="page-head">
+        <h1 class="page-head__title">Tableau de bord</h1>
+        <p class="page-head__meta" id="stats-updated" aria-live="polite"></p>
+      </div>
+
+      <div id="page-error" class="alert alert--error" role="alert" hidden></div>
+
+      <section class="kpis" aria-label="Chiffres clés">
+        <div class="kpi kpi--main">
+          <p class="kpi__label">Jeunes recensés</p>
+          <p class="kpi__value" id="kpi-total">–</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Hommes</p>
+          <p class="kpi__value" id="kpi-hommes">–</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Femmes</p>
+          <p class="kpi__value" id="kpi-femmes">–</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Moins de 18 ans</p>
+          <p class="kpi__value" id="kpi-mineurs">–</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Enfants déclarés</p>
+          <p class="kpi__value" id="kpi-enfants">–</p>
+        </div>
+        <div class="kpi">
+          <p class="kpi__label">Recensés ces 30 derniers jours</p>
+          <p class="kpi__value" id="kpi-30j">–</p>
+        </div>
+      </section>
+
+      <div class="panels">
+        <section class="panel" aria-labelledby="t-sexe">
+          <h2 class="panel__title" id="t-sexe">Répartition par sexe</h2>
+          <div class="bar-chart" id="chart-sexe" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-age">
+          <h2 class="panel__title" id="t-age">Répartition par tranche d'âge</h2>
+          <div class="bar-chart" id="chart-age" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-pays">
+          <h2 class="panel__title" id="t-pays">Répartition par pays</h2>
+          <div class="bar-chart" id="chart-pays" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-ville">
+          <h2 class="panel__title" id="t-ville">Répartition par ville</h2>
+          <p class="panel__note">Les 15 villes les plus représentées.</p>
+          <div class="bar-chart" id="chart-ville" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-eglise">
+          <h2 class="panel__title" id="t-eglise">Répartition par église</h2>
+          <p class="panel__note">Les 15 églises les plus représentées.</p>
+          <div class="bar-chart" id="chart-eglise" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-pro">
+          <h2 class="panel__title" id="t-pro">Répartition par situation professionnelle</h2>
+          <div class="bar-chart" id="chart-pro" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+
+        <section class="panel" aria-labelledby="t-matri">
+          <h2 class="panel__title" id="t-matri">Répartition par situation matrimoniale</h2>
+          <div class="bar-chart" id="chart-matri" data-empty="Aucune donnée pour le moment."></div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
