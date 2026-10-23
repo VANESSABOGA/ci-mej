@@ -35,17 +35,29 @@
 
 /* ---------- Jetons de design ---------- */
 :root {
-  /* Couleurs imposées par le cahier des charges */
-  --blue-900: #1E3A8A;
-  --blue-500: #3B82F6;
-  --green-500: #22C55E;
+  /* Palette verte & blanche (alignée sur la page d'accueil) */
+  --g900: #0F3D22;
+  --g800: #14532D;
+  --g700: #166534;
+  --g600: #16A34A;
+  --g500: #22C55E;
+  --g200: #BBF7D0;
+  --g100: #DCFCE7;
+  --g50: #F0FDF4;
+  --gold: #E9C46A;
+  --line: #DCEBE1;
   --white: #FFFFFF;
   --gray-100: #F3F4F6;
 
+  /* Alias de compatibilité : les anciens noms --blue-* pointent désormais sur le vert */
+  --blue-900: var(--g800);
+  --blue-500: var(--g600);
+  --green-500: var(--g500);
+
   /* Couleurs dérivées */
-  --blue-950: #172E6E;
-  --blue-50: #EFF6FF;
-  --blue-100: #DBEAFE;
+  --blue-950: var(--g900);
+  --blue-50: var(--g50);
+  --blue-100: var(--g100);
   --green-600: #16A34A;
   --green-700: #15803D;
   --green-50: #F0FDF4;
@@ -67,10 +79,10 @@
   --color-text: var(--gray-900);
   --color-text-muted: var(--gray-600);
   --color-border: var(--gray-300);
-  --color-bg: var(--gray-100);
+  --color-bg: #F7FBF8;
   --color-surface: var(--white);
-  --color-primary: var(--blue-900);
-  --color-accent: var(--blue-500);
+  --color-primary: var(--g700);
+  --color-accent: var(--g600);
   --color-success: var(--green-500);
   --color-error: var(--red-600);
   --focus-ring: 0 0 0 3px var(--white), 0 0 0 5px var(--blue-500);
@@ -98,7 +110,7 @@
   --radius-sm: 6px;
   --radius: 10px;
   --radius-lg: 16px;
-  --shadow-card: 0 1px 2px rgba(30, 58, 138, 0.06), 0 8px 24px rgba(30, 58, 138, 0.08);
+  --shadow-card: 0 1px 2px rgba(20, 83, 45, 0.06), 0 10px 30px rgba(20, 83, 45, 0.10);
   --control-h: 2.875rem;
 }
 
@@ -162,7 +174,7 @@ legend {
 }
 
 a {
-  color: var(--blue-900);
+  color: var(--g700);
   text-underline-offset: 0.15em;
 }
 
@@ -314,7 +326,7 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--blue-500);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
 }
 
 input:disabled,
@@ -414,7 +426,7 @@ select:disabled {
   min-height: var(--control-h);
   padding: 0.625rem 1.375rem;
   border: 1.5px solid transparent;
-  border-radius: var(--radius);
+  border-radius: 999px;
   font-size: var(--fs-base);
   font-weight: 600;
   line-height: 1.2;
@@ -445,12 +457,12 @@ select:disabled {
 }
 
 .btn--primary {
-  background: var(--blue-900);
+  background: var(--g700);
   color: var(--white);
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: var(--blue-950);
+  background: var(--g800);
   color: var(--white);
 }
 
@@ -554,9 +566,9 @@ select:disabled {
 }
 
 .alert--info {
-  background: var(--blue-50);
-  border-color: var(--blue-500);
-  color: var(--blue-950);
+  background: #EFF6FF;
+  border-color: #3B82F6;
+  color: #1E3A8A;
 }
 
 .alert--success {
@@ -696,7 +708,22 @@ select:disabled {
   padding: var(--sp-6) var(--sp-4);
   text-align: center;
   font-size: var(--fs-sm);
-  color: var(--color-text-muted);
+  background: var(--g900);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.site-footer a {
+  color: var(--gold);
+}
+
+.site-footer a:hover {
+  color: var(--white);
+}
+
+.site-footer__copy {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  opacity: 0.7;
 }
 
 /* ---------- Mouvement réduit ---------- */

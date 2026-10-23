@@ -1,0 +1,162 @@
+/* ============================================
+   THEME VERT & BLANC — Communauté chrétienne
+   À charger APRÈS base.css et accueil.css
+   ============================================ */
+
+:root {
+  --color-primary: #166534;
+  --color-primary-dark: #14532D;
+  --color-primary-light: #4ADE80;
+  --color-accent: #E9C46A;
+  --color-bg-card: #FFFFFF;
+  --color-bg-subtle: #F0FDF4;
+  --color-border-light: #DCEFE2;
+  --color-text: #1F2937;
+  --color-text-muted: #4B5563;
+}
+
+body { background: #F7FBF8; }
+
+/* ---------- Hero ---------- */
+.hero {
+  background:
+    radial-gradient(circle at 85% 15%, rgba(233, 196, 106, 0.18), transparent 40%),
+    linear-gradient(135deg, #166534 0%, #14532D 60%, #0F3D22 100%);
+}
+
+/* Croix discrète au-dessus du logo */
+.hero__inner::before {
+  content: '';
+  display: block;
+  width: 2px;
+  height: 36px;
+  margin: 0 auto var(--space-5);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 0 transparent;
+  position: relative;
+}
+
+.hero__logo {
+  background: #fff;
+  border: 3px solid rgba(233, 196, 106, 0.8);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.hero__eyebrow {
+  color: var(--color-accent);
+  background: rgba(233, 196, 106, 0.12);
+  border: 1px solid rgba(233, 196, 106, 0.4);
+  letter-spacing: 0.14em;
+  margin-bottom: var(--space-2);
+}
+
+.hero__org {
+  font-size: clamp(0.9375rem, 2vw, 1.0625rem);
+  letter-spacing: 0.02em;
+  opacity: 0.92;
+  margin-bottom: var(--space-5);
+}
+
+.hero__verse {
+  max-width: 52ch;
+  margin: 0 auto var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.hero__verse cite {
+  display: block;
+  margin-top: var(--space-1);
+  font-style: normal;
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+}
+
+/* ---------- Boutons ---------- */
+.hero .btn--primary {
+  background: #fff;
+  color: var(--color-primary);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.hero .btn--primary:hover:not(:disabled) {
+  background: #F0FDF4;
+  color: var(--color-primary-dark);
+}
+
+.section .btn--primary,
+.cta .btn--primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.section .btn--primary:hover:not(:disabled),
+.cta .btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+/* ---------- Sections ---------- */
+.section__title {
+  position: relative;
+  padding-bottom: var(--space-3);
+}
+
+.section__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--color-accent);
+}
+
+.section--alt { background: #fff; }
+
+/* ---------- Cartes ---------- */
+.card {
+  border-top: 3px solid var(--color-primary);
+}
+
+.card__icon { background: #DCFCE7; }
+
+/* ---------- Étapes ---------- */
+.steps-list__item {
+  border-left-color: var(--color-primary);
+}
+
+.steps-list__num {
+  background: var(--color-primary);
+  box-shadow: 0 0 0 4px #DCFCE7;
+}
+
+/* ---------- FAQ ---------- */
+.faq__item[open] {
+  border-color: var(--color-primary);
+  background: #F7FDF9;
+}
+
+/* ---------- Pied de page ---------- */
+.site-footer {
+  background: var(--color-primary-dark);
+  color: rgba(255, 255, 255, 0.85);
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.site-footer a { color: var(--color-accent); }
+
+/* ---------- Focus accessible ---------- */
+a:focus-visible,
+summary:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}

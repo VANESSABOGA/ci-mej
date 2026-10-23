@@ -7,10 +7,12 @@
 .form-header {
   position: relative;
   padding: var(--sp-6) var(--sp-4) 7rem;
-  background-color: var(--blue-900);
+  background-color: var(--g800);
   background-image:
-    radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.45) 0, rgba(59, 130, 246, 0) 45%),
-    radial-gradient(circle at 0% 100%, rgba(34, 197, 94, 0.18) 0, rgba(34, 197, 94, 0) 40%);
+    radial-gradient(60% 80% at 85% 0%, rgba(233, 196, 106, 0.22), transparent 60%),
+    linear-gradient(180deg, rgba(15, 61, 34, 0.45), rgba(20, 83, 45, 0)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 26v20M26 36h20' stroke='white' stroke-opacity='.07' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: auto, auto, 72px 72px;
   color: var(--white);
   overflow: hidden;
 }
@@ -23,7 +25,7 @@
   right: 0;
   bottom: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--green-500) 0 33%, var(--blue-500) 33% 100%);
+  background: linear-gradient(90deg, var(--gold) 0 33%, var(--g500) 33% 100%);
 }
 
 .form-header__inner {
@@ -39,7 +41,7 @@
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 14px;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 3px rgba(233, 196, 106, 0.8);
 }
 
 .form-header__title {
@@ -160,13 +162,13 @@
 }
 
 .progress::-webkit-progress-value {
-  background: linear-gradient(90deg, var(--blue-500), var(--green-500));
+  background: linear-gradient(90deg, var(--g600), var(--gold));
   border-radius: 999px;
   transition: width 0.3s ease;
 }
 
 .progress::-moz-progress-bar {
-  background: linear-gradient(90deg, var(--blue-500), var(--green-500));
+  background: linear-gradient(90deg, var(--g600), var(--gold));
   border-radius: 999px;
 }
 
@@ -215,9 +217,10 @@
 }
 
 .steps-nav__item.is-current::before {
-  border-color: var(--blue-900);
-  background: var(--blue-900);
+  border-color: var(--g800);
+  background: var(--g800);
   color: var(--white);
+  box-shadow: 0 0 0 4px var(--g100);
 }
 
 .steps-nav__item.is-done {
@@ -386,8 +389,8 @@
 
 .subsection--highlight {
   background: var(--green-50);
-  border-color: #BBF7D0;
-  border-left-color: var(--green-500);
+  border-color: var(--g200);
+  border-left-color: var(--g500);
 }
 
 .subsection__head {
@@ -634,7 +637,10 @@
   place-items: center;
   padding: var(--sp-4);
   background-color: var(--blue-900);
-  background-image: radial-gradient(circle at 100% 0%, rgba(59, 130, 246, 0.45) 0, rgba(59, 130, 246, 0) 50%);
+  background-image:
+    radial-gradient(60% 80% at 85% 0%, rgba(233, 196, 106, 0.22), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 26v20M26 36h20' stroke='white' stroke-opacity='.07' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: auto, 72px 72px;
 }
 
 .simple-card {
@@ -787,4 +793,47 @@
   .turnstile {
     display: none !important;
   }
+}
+
+
+/* ==========================================================================
+   Alignement avec la page d'accueil (vert, blanc, touches dorées)
+   ========================================================================== */
+.progress-block,
+.form-card,
+.doc,
+.simple-card {
+  border: 1px solid var(--line);
+}
+
+.form-card {
+  border-top: 4px solid var(--g700);
+}
+
+.step__title {
+  position: relative;
+  border-bottom-color: var(--line);
+}
+
+.step__title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 48px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gold);
+}
+
+.progress-block__label,
+.recap__title,
+.subsection__title,
+.privacy-notice__title {
+  color: var(--g800);
+}
+
+.simple-card__icon--success {
+  background: var(--g50);
+  color: var(--g600);
 }

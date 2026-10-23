@@ -3,572 +3,448 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulaire de recensement des jeunes</title>
-  <meta name="description" content="Recensement des jeunes du mouvement : mieux nous connaître pour mieux accompagner chaque jeune.">
-  <meta name="theme-color" content="#1E3A8A">
-  <meta name="referrer" content="no-referrer">
-  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="assets/fonts/inter-latin-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="assets/fonts/inter-latin-600.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/form.css">
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
-  <script type="module" src="assets/js/form/form.js"></script>
-</head>
-<body class="page-form">
-  <a class="skip-link" href="#contenu">Aller au formulaire</a>
+  <title>Recensement des jeunes — MEJ EBPE</title>
+  <meta name="description" content="Recensement des jeunes du MEJ EBPE : mieux nous connaître pour mieux accompagner chaque jeune dans son parcours spirituel, familial, scolaire et professionnel.">
+  <meta name="theme-color" content="#166534">
+  <link rel="icon" href="logo_cimej.jpg" type="image/svg+xml">
 
-  <header class="form-header">
-    <div class="form-header__inner">
-      <img class="form-header__logo" src="assets/img/logo.svg" alt="" width="56" height="56">
-      <div>
-        <h1 class="form-header__title">Formulaire de recensement des jeunes</h1>
-        <p class="form-header__subtitle">« Mieux nous connaître pour mieux accompagner chaque jeune dans son parcours spirituel, familial, scolaire et professionnel. »</p>
+  <style>
+    /* =========================================================
+       PAGE D'ACCUEIL — MEJ EBPE (vert & blanc)
+       Fichier autonome : aucune autre feuille CSS requise.
+       Photo du hero (optionnelle) : assets/img/hero.jpg
+       ========================================================= */
+
+    :root {
+      --g900: #0F3D22;
+      --g800: #14532D;
+      --g700: #166534;
+      --g600: #16A34A;
+      --g200: #BBF7D0;
+      --g100: #DCFCE7;
+      --g50:  #F0FDF4;
+      --gold: #E9C46A;
+      --bg:   #F7FBF8;
+      --text: #14231A;
+      --muted:#55655B;
+      --line: #DCEBE1;
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(20, 83, 45, 0.10);
+      --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img, svg { max-width: 100%; }
+    a { color: var(--g700); }
+    h1, h2, h3, p { margin: 0; }
+
+    .ico {
+      width: 24px; height: 24px; flex-shrink: 0;
+      fill: none; stroke: currentColor; stroke-width: 2;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+    .container { width: min(1080px, 100% - 2.5rem); margin-inline: auto; }
+
+    /* ---------- Boutons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+      padding: .95rem 1.7rem;
+      border-radius: 999px;
+      font: 600 1rem/1 var(--font);
+      text-decoration: none;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn--white { background: #fff; color: var(--g800); box-shadow: 0 8px 24px rgba(0,0,0,.22); }
+    .btn--white:hover { background: var(--g50); }
+    .btn--outline { color: #fff; border-color: rgba(255,255,255,.55); }
+    .btn--outline:hover { background: rgba(255,255,255,.12); }
+    .btn--green { background: var(--g700); color: #fff; box-shadow: 0 8px 22px rgba(22,101,52,.28); }
+    .btn--green:hover { background: var(--g800); }
+    .btn--sm { padding: .65rem 1.2rem; font-size: .9rem; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+    /* ---------- Barre de navigation ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; padding: .7rem 0;
+    }
+    .brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; color: var(--g800); }
+    .brand img { width: 40px; height: 40px; border-radius: 10px; }
+    .brand__name { font-weight: 700; letter-spacing: .04em; line-height: 1.1; }
+    .brand__name small { display: block; font-weight: 400; font-size: .72rem; letter-spacing: 0; color: var(--muted); }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      color: #fff;
+      text-align: center;
+      padding: clamp(4rem, 9vw, 7rem) 0 clamp(7rem, 12vw, 9.5rem);
+      background-color: var(--g800);
+      background-image:
+        radial-gradient(60% 80% at 80% 0%, rgba(233,196,106,.22), transparent 60%),
+        linear-gradient(180deg, rgba(15,61,34,.78) 0%, rgba(20,83,45,.92) 100%),
+        url("assets/img/hero.jpg"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cpath d='M36 26v20M26 36h20' stroke='white' stroke-opacity='.07' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-size: auto, auto, cover, 72px 72px;
+      background-position: center, center, center, center;
+    }
+    .hero__wave {
+      position: absolute; left: 0; right: 0; bottom: -1px;
+      width: 100%; height: clamp(40px, 6vw, 80px); display: block;
+    }
+    .hero__inner { max-width: 760px; margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .4rem 1.1rem;
+      border-radius: 999px;
+      font-size: .82rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold);
+      background: rgba(233,196,106,.12);
+      border: 1px solid rgba(233,196,106,.4);
+    }
+    .hero__org { margin: .9rem 0 1.4rem; opacity: .9; font-size: 1.05rem; }
+    .hero__title {
+      font-size: clamp(2.2rem, 6.5vw, 4rem);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.08;
+      margin-bottom: 1.2rem;
+    }
+    .hero__title em { font-style: normal; color: var(--gold); }
+    .hero__subtitle {
+      font-size: clamp(1.02rem, 2.2vw, 1.2rem);
+      max-width: 56ch; margin: 0 auto 2rem; opacity: .93;
+    }
+    .hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem; }
+
+    /* ---------- Carte infos (chevauche le hero) ---------- */
+    .quick {
+      position: relative; z-index: 2;
+      margin-top: -3.2rem;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: 0 18px 50px rgba(20,83,45,.18);
+      border: 1px solid var(--line);
+    }
+    .quick__item { display: flex; align-items: center; gap: 1rem; padding: 1.4rem 1.6rem; }
+    .quick__item + .quick__item { border-left: 1px solid var(--line); }
+    .quick__ico {
+      display: grid; place-items: center;
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--g100); color: var(--g700);
+    }
+    .quick__item strong { display: block; color: var(--g800); line-height: 1.2; }
+    .quick__item span { font-size: .88rem; color: var(--muted); }
+
+    /* ---------- Sections ---------- */
+    .section { padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+    .section--white { background: #fff; }
+    .section__head { max-width: 640px; margin-bottom: 2.5rem; }
+    .section__head--center { margin-inline: auto; text-align: center; }
+    .kicker {
+      display: inline-block; margin-bottom: .6rem;
+      font-size: .8rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--g600);
+    }
+    .section__title {
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      letter-spacing: -.02em; line-height: 1.15; color: var(--g900);
+      margin-bottom: .8rem;
+    }
+    .section__intro { color: var(--muted); font-size: 1.05rem; }
+
+    /* ---------- Cartes ---------- */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.4rem; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.9rem;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(20,83,45,.16); }
+    .card__ico {
+      display: grid; place-items: center;
+      width: 56px; height: 56px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--g700), var(--g600));
+      color: #fff; margin-bottom: 1.2rem;
+    }
+    .card__ico .ico { width: 26px; height: 26px; }
+    .card__title { font-size: 1.15rem; color: var(--g900); margin-bottom: .5rem; }
+    .card__text { color: var(--muted); font-size: .97rem; }
+
+    /* ---------- Étapes ---------- */
+    .steps {
+      list-style: none; margin: 0 0 2.8rem; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.2rem;
+      counter-reset: step;
+    }
+    .step {
+      position: relative;
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1.4rem 1.4rem 1.4rem 1.3rem;
+      background: var(--g50);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      display: grid; place-items: center; flex-shrink: 0;
+      width: 2.5rem; height: 2.5rem; border-radius: 50%;
+      background: var(--g700); color: #fff; font-weight: 700;
+      box-shadow: 0 0 0 5px var(--g100);
+    }
+    .step h3 { font-size: 1.05rem; color: var(--g900); margin-bottom: .15rem; }
+    .step p { font-size: .92rem; color: var(--muted); }
+    .center { text-align: center; }
+
+    /* ---------- Verset ---------- */
+    .verse {
+      background: linear-gradient(135deg, var(--g800), var(--g900));
+      color: #fff; text-align: center;
+      padding: clamp(3rem, 6vw, 4.5rem) 0;
+    }
+    .verse blockquote { margin: 0 auto; max-width: 700px; }
+    .verse p {
+      font-family: Georgia, "Times New Roman", serif;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3.5vw, 2rem); line-height: 1.4;
+    }
+    .verse cite {
+      display: block; margin-top: 1rem;
+      font-style: normal; font-size: .9rem; letter-spacing: .1em; color: var(--gold);
+    }
+
+    /* ---------- FAQ ---------- */
+    .faq { max-width: 780px; margin-inline: auto; display: grid; gap: .8rem; }
+    .faq details {
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      padding: 1.1rem 1.4rem; transition: border-color .2s ease;
+    }
+    .faq details[open] { border-color: var(--g600); background: var(--g50); }
+    .faq summary {
+      cursor: pointer; list-style: none; font-weight: 600; color: var(--g900);
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; font-size: 1.6rem; font-weight: 400; color: var(--g700); transition: transform .2s ease; }
+    .faq details[open] summary::after { transform: rotate(45deg); }
+    .faq details p { margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .96rem; }
+
+    /* ---------- Appel final ---------- */
+    .final {
+      text-align: center;
+      background: var(--g50);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: clamp(2.2rem, 5vw, 3.5rem) 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .final h2 { font-size: clamp(1.5rem, 3.5vw, 2rem); color: var(--g900); margin-bottom: .6rem; }
+    .final p { color: var(--muted); margin-bottom: 1.5rem; }
+
+    /* ---------- Pied de page ---------- */
+    .footer { background: var(--g900); color: rgba(255,255,255,.82); text-align: center; padding: 2.2rem 1rem; font-size: .92rem; }
+    .footer a { color: var(--gold); }
+    .footer__copy { margin-top: .5rem; font-size: .8rem; opacity: .7; }
+
+    /* ---------- Mobile ---------- */
+    @media (max-width: 760px) {
+      .quick { grid-template-columns: 1fr; margin-top: -2.5rem; }
+      .quick__item + .quick__item { border-left: 0; border-top: 1px solid var(--line); }
+      .hero__actions .btn { width: 100%; }
+      .brand__name small { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" aria-label="Navigation principale">
+    <div class="container nav__inner">
+      <a class="brand" href="index.html">
+        <img src="logo_cimej.jpg" alt="Logo MEJ EBPE" width="40" height="40">
+        <span class="brand__name">MEJ EBPE<small>Mouvement de l'Enfance et de la Jeunesse</small></span>
+      </a>
+      <a class="btn btn--green btn--sm" href="formulaire.html">Je me recense</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container hero__inner">
+      <span class="eyebrow">Recensement officiel</span>
+      <p class="hero__org">Mouvement de l'Enfance et de la Jeunesse — MEJ EBPE</p>
+      <h1 class="hero__title">Recensement <em>des jeunes</em></h1>
+      <p class="hero__subtitle">
+        Mieux nous connaître pour mieux accompagner chaque jeune
+        dans son parcours spirituel, familial, scolaire et professionnel.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--white" href="formulaire.html">
+          Commencer le recensement
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a class="btn btn--outline" href="#infos">En savoir plus</a>
       </div>
     </div>
+    <svg class="hero__wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 80V40C240 5 480 0 720 25s480 35 720 5v50z" fill="#F7FBF8"/>
+    </svg>
   </header>
 
-  <main id="contenu" class="form-main" tabindex="-1">
-    <noscript>
-      <div class="alert alert--error">
-        Ce formulaire a besoin de JavaScript pour fonctionner. Activez-le dans votre navigateur, puis rechargez la page.
+  <main>
+    <!-- Infos rapides -->
+    <div class="container">
+      <div class="quick">
+        <div class="quick__item">
+          <div class="quick__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div><strong>Environ 5 minutes</strong><span>Rapide et simple</span></div>
+        </div>
+        <div class="quick__item">
+          <div class="quick__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div><strong>6 étapes courtes</strong><span>Retour possible à tout moment</span></div>
+        </div>
+        <div class="quick__item">
+          <div class="quick__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div><strong>Données confidentielles</strong><span>Jamais vendues</span></div>
+        </div>
       </div>
-    </noscript>
-
-    <div class="progress-block">
-      <div class="progress-block__top">
-        <p class="progress-block__label" id="progress-label" aria-live="polite">Étape 1 sur 6 : Identité</p>
-        <p class="progress-block__time">Environ 5 minutes</p>
-      </div>
-      <progress id="progress" class="progress" max="6" value="1" aria-labelledby="progress-label">Étape 1 sur 6</progress>
-      <ol class="steps-nav" id="steps-nav" aria-label="Étapes du formulaire">
-        <li class="steps-nav__item is-current" data-step-nav="1" aria-current="step">Identité</li>
-        <li class="steps-nav__item" data-step-nav="2">Coordonnées</li>
-        <li class="steps-nav__item" data-step-nav="3">Église et parcours</li>
-        <li class="steps-nav__item" data-step-nav="4">Famille</li>
-        <li class="steps-nav__item" data-step-nav="5">Tutelle</li>
-        <li class="steps-nav__item" data-step-nav="6">Confirmation</li>
-      </ol>
     </div>
 
-    <form id="form-recensement" class="form-card" novalidate autocomplete="on">
-      <p class="form-card__legend-req">Les champs marqués d'un astérisque (<span class="req" aria-hidden="true">*</span>) sont obligatoires.</p>
+    <!-- Pourquoi -->
+    <section class="section" id="infos" aria-labelledby="infos-title">
+      <div class="container">
+        <div class="section__head section__head--center">
+          <span class="kicker">Notre démarche</span>
+          <h2 class="section__title" id="infos-title">Pourquoi ce recensement ?</h2>
+          <p class="section__intro">
+            Ce recensement nous permet de mieux connaître les jeunes du MEJ EBPE,
+            afin de mieux les accompagner et d'organiser des activités adaptées à leurs besoins.
+          </p>
+        </div>
 
-      <div id="error-summary" class="error-summary" role="alert" tabindex="-1" hidden>
-        <h2 class="error-summary__title">Corrigez les points suivants pour continuer</h2>
-        <ul class="error-summary__list" id="error-summary-list"></ul>
+        <div class="cards">
+          <article class="card">
+            <div class="card__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h3 class="card__title">Mieux vous accompagner</h3>
+            <p class="card__text">Connaître chaque jeune sur les plans spirituel, familial, scolaire et professionnel, pour proposer un accompagnement personnalisé.</p>
+          </article>
+          <article class="card">
+            <div class="card__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+            <h3 class="card__title">Organiser nos activités</h3>
+            <p class="card__text">Planifier des rencontres, formations et temps forts adaptés aux réalités et aux attentes des jeunes du mouvement.</p>
+          </article>
+          <article class="card">
+            <div class="card__ico"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h3 class="card__title">Vos données protégées</h3>
+            <p class="card__text">Vos informations sont confidentielles, utilisées uniquement pour l'accompagnement et l'organisation des activités. Jamais vendues ni utilisées à des fins publicitaires.</p>
+          </article>
+        </div>
       </div>
+    </section>
 
-      <!-- Champ piège anti-robot : invisible pour les humains -->
-      <div class="hp" aria-hidden="true">
-        <label for="site_web">Ne pas remplir ce champ</label>
-        <input type="text" id="site_web" name="site_web" tabindex="-1" autocomplete="off">
+    <!-- Verset -->
+    <section class="verse" aria-label="Verset">
+      <div class="container">
+        <blockquote>
+          <p>« Que personne ne méprise ta jeunesse. »</p>
+          <cite>1 Timothée 4:12</cite>
+        </blockquote>
       </div>
-      <input type="hidden" id="submission_id" name="submission_id">
+    </section>
 
-      <!-- ═══════════════ ÉTAPE 1 : IDENTITÉ ═══════════════ -->
-      <section class="step" data-step="1" aria-labelledby="step1-title">
-        <h2 class="step__title" id="step1-title" tabindex="-1">Identité</h2>
-
-        <div class="grid grid--2">
-          <div class="field">
-            <label for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
-            <input id="nom" name="nom" type="text" autocomplete="family-name" maxlength="100" required>
-          </div>
-          <div class="field">
-            <label for="prenoms">Prénoms <span class="req" aria-hidden="true">*</span></label>
-            <input id="prenoms" name="prenoms" type="text" autocomplete="given-name" maxlength="150" required>
-          </div>
+    <!-- Étapes -->
+    <section class="section section--white" aria-labelledby="etapes-title">
+      <div class="container">
+        <div class="section__head section__head--center">
+          <span class="kicker">Le parcours</span>
+          <h2 class="section__title" id="etapes-title">Comment ça se passe ?</h2>
+          <p class="section__intro">Le formulaire est découpé en 6 étapes courtes. Vous pouvez revenir en arrière à tout moment avant l'envoi final.</p>
         </div>
 
-        <fieldset class="field field--choices" id="fs-sexe">
-          <legend>Sexe <span class="req" aria-hidden="true">*</span></legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="sexe" value="M" required><span>Masculin</span></label>
-            <label class="choice"><input type="radio" name="sexe" value="F"><span>Féminin</span></label>
-          </div>
-        </fieldset>
+        <ol class="steps">
+          <li class="step"><div><h3>Identité</h3><p>Nom, prénoms, sexe, date de naissance, nationalité.</p></div></li>
+          <li class="step"><div><h3>Coordonnées</h3><p>Téléphone, WhatsApp, e-mail, pays et ville de résidence.</p></div></li>
+          <li class="step"><div><h3>Église et parcours</h3><p>Église, baptême, niveau d'études, situation professionnelle.</p></div></li>
+          <li class="step"><div><h3>Famille</h3><p>Situation matrimoniale, conjoint, enfants.</p></div></li>
+          <li class="step"><div><h3>Tutelle</h3><p>Tutelle, responsable légal si vous êtes mineur(e).</p></div></li>
+          <li class="step"><div><h3>Confirmation</h3><p>Vérification, consentement et envoi.</p></div></li>
+        </ol>
 
-        <div class="grid grid--2">
-          <div class="field">
-            <label for="date_naissance">Date de naissance <span class="req" aria-hidden="true">*</span></label>
-            <input id="date_naissance" name="date_naissance" type="date" autocomplete="bday" required aria-describedby="hint-date_naissance">
-            <p class="hint" id="hint-date_naissance">Format jour/mois/année.</p>
-          </div>
-          <div class="field">
-            <label for="nationalite">Nationalité <span class="req" aria-hidden="true">*</span></label>
-            <select id="nationalite" name="nationalite" data-fill="nationalites" required>
-              <option value="">Choisissez</option>
-            </select>
-          </div>
+        <div class="center">
+          <a class="btn btn--green" href="formulaire.html">
+            Remplir le formulaire
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
         </div>
-
-        <div class="alert alert--info" id="info-mineur" role="status" hidden>
-          Vous avez moins de 18 ans. À l'étape « Tutelle », nous vous demanderons les coordonnées d'un parent ou responsable légal et son accord.
-        </div>
-      </section>
-
-      <!-- ═══════════════ ÉTAPE 2 : COORDONNÉES ═══════════════ -->
-      <section class="step" data-step="2" aria-labelledby="step2-title" hidden>
-        <h2 class="step__title" id="step2-title" tabindex="-1">Coordonnées</h2>
-
-        <div class="field">
-          <label for="telephone">Téléphone principal <span class="req" aria-hidden="true">*</span></label>
-          <div class="phone">
-            <select id="telephone_indicatif" name="telephone_indicatif" data-fill="indicatifs" aria-label="Indicatif du téléphone principal" required></select>
-            <input id="telephone" name="telephone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" required aria-describedby="hint-telephone">
-          </div>
-          <p class="hint" id="hint-telephone">Sans l'indicatif. Exemple : 07 08 09 10 11</p>
-        </div>
-
-        <div class="field">
-          <label class="checkbox">
-            <input type="checkbox" id="whatsapp_identique" name="whatsapp_identique" checked>
-            <span>Mon numéro WhatsApp est le même que mon téléphone principal</span>
-          </label>
-        </div>
-
-        <div class="field" id="bloc-whatsapp" hidden>
-          <label for="whatsapp">Téléphone WhatsApp <span class="req" aria-hidden="true">*</span></label>
-          <div class="phone">
-            <select id="whatsapp_indicatif" name="whatsapp_indicatif" data-fill="indicatifs" aria-label="Indicatif du numéro WhatsApp"></select>
-            <input id="whatsapp" name="whatsapp" type="tel" inputmode="tel" maxlength="20">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="email">Adresse e-mail <span class="optional">(facultatif)</span></label>
-          <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email">
-        </div>
-
-        <div class="grid grid--2">
-          <div class="field">
-            <label for="pays_residence">Pays de résidence <span class="req" aria-hidden="true">*</span></label>
-            <select id="pays_residence" name="pays_residence" data-fill="pays" autocomplete="country" required>
-              <option value="">Choisissez</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="ville_residence">Ville de résidence <span class="req" aria-hidden="true">*</span></label>
-            <input id="ville_residence" name="ville_residence" type="text" autocomplete="address-level2" maxlength="100" required list="liste-villes">
-            <datalist id="liste-villes">
-              <option value="Abidjan"></option>
-              <option value="Bouaké"></option>
-              <option value="Daloa"></option>
-              <option value="Yamoussoukro"></option>
-              <option value="San-Pédro"></option>
-              <option value="Korhogo"></option>
-              <option value="Man"></option>
-              <option value="Gagnoa"></option>
-              <option value="Divo"></option>
-              <option value="Abengourou"></option>
-            </datalist>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══════════════ ÉTAPE 3 : ÉGLISE ET PARCOURS ═══════════════ -->
-      <!-- <section class="step" data-step="3" aria-labelledby="step3-title" hidden>
-        <h2 class="step__title" id="step3-title" tabindex="-1">Église et parcours</h2>
-
-        <div class="grid grid--2">
-          <div class="field">
-            <label for="eglise">Église fréquentée <span class="req" aria-hidden="true">*</span></label>
-            <input id="eglise" name="eglise" type="text" maxlength="150" required aria-describedby="hint-eglise">
-            <p class="hint" id="hint-eglise">Nom complet de l'église et quartier ou ville.</p>
-          </div>
-          <div class="field">
-            <label for="communaute">Communauté ou groupe de jeunes <span class="optional">(facultatif)</span></label>
-            <input id="communaute" name="communaute" type="text" maxlength="150">
-          </div>
-        </div>
-
-        <div class="field">
-          <label for="fonction_mouvement">Fonction dans le mouvement <span class="optional">(facultatif)</span></label>
-          <input id="fonction_mouvement" name="fonction_mouvement" type="text" maxlength="100" list="liste-fonctions" aria-describedby="hint-fonction">
-          <datalist id="liste-fonctions">
-            <option value="Membre"></option>
-            <option value="Responsable de groupe"></option>
-            <option value="Responsable adjoint"></option>
-            <option value="Secrétaire"></option>
-            <option value="Trésorier"></option>
-            <option value="Chargé de la louange"></option>
-            <option value="Chargé de l'évangélisation"></option>
-            <option value="Chargé de la communication"></option>
-          </datalist>
-          <p class="hint" id="hint-fonction">Laissez vide si vous n'avez pas de fonction particulière.</p>
-        </div>
-
-        <div class="field">
-          <label for="niveau_etudes">Niveau d'études <span class="req" aria-hidden="true">*</span></label>
-          <select id="niveau_etudes" name="niveau_etudes" required>
-            <option value="">Choisissez</option>
-            <option value="aucun">Aucun</option>
-            <option value="primaire">Primaire</option>
-            <option value="college">Collège (1er cycle)</option>
-            <option value="lycee">Lycée (2nd cycle)</option>
-            <option value="bac">Baccalauréat</option>
-            <option value="bac_2">BAC +2 (BTS, DUT…)</option>
-            <option value="licence">Licence (BAC +3)</option>
-            <option value="master">Master (BAC +5)</option>
-            <option value="doctorat">Doctorat</option>
-            <option value="formation_pro">Formation professionnelle</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-
-        <fieldset class="field field--choices" id="fs-situation_professionnelle">
-          <legend>Situation professionnelle <span class="req" aria-hidden="true">*</span></legend>
-          <div class="choices choices--grid">
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="eleve" required><span>Élève</span></label>
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="etudiant"><span>Étudiant(e)</span></label>
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="salarie"><span>Salarié(e)</span></label>
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="entrepreneur"><span>Entrepreneur(e)</span></label>
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="sans_emploi"><span>Sans emploi</span></label>
-            <label class="choice"><input type="radio" name="situation_professionnelle" value="autre"><span>Autre</span></label>
-          </div>
-        </fieldset>
-
-        <div class="field" id="bloc-situation-autre" hidden>
-          <label for="situation_professionnelle_autre">Précisez votre situation <span class="req" aria-hidden="true">*</span></label>
-          <input id="situation_professionnelle_autre" name="situation_professionnelle_autre" type="text" maxlength="100">
-        </div>
-
-        <div class="field">
-          <label for="profession">Profession <span class="optional" id="profession-mention">(facultatif)</span></label>
-          <input id="profession" name="profession" type="text" maxlength="100" autocomplete="organization-title" aria-describedby="hint-profession">
-          <p class="hint" id="hint-profession">Votre métier, ou le métier visé si vous êtes en formation.</p>
-        </div>
-      </section> -->
-
-
-
-      <!-- ═══════════════ ÉTAPE 3 : ÉGLISE ET PARCOURS ═══════════════ -->
-<section class="step" data-step="3" aria-labelledby="step3-title" hidden>
-  <h2 class="step__title" id="step3-title" tabindex="-1">Église et parcours</h2>
-
-  <div class="grid grid--2">
-    <div class="field">
-      <label for="eglise">À quelle église appartenez-vous ? <span class="req" aria-hidden="true">*</span></label>
-      <select id="eglise" name="eglise" data-fill="eglises" required aria-describedby="hint-eglise">
-        <option value="">Choisissez une église</option>
-      </select>
-      <p class="hint" id="hint-eglise">Sélectionnez votre église d'appartenance.</p>
-    </div>
-    <div class="field">
-      <label for="communaute">Communauté ou groupe de jeunes <span class="optional">(facultatif)</span></label>
-      <input id="communaute" name="communaute" type="text" maxlength="150">
-    </div>
-  </div>
-
-  <!-- Précision si "Autres" -->
-  <div class="field" id="bloc-eglise-autre" hidden>
-    <label for="eglise_autre">Précisez votre église <span class="req" aria-hidden="true">*</span></label>
-    <input id="eglise_autre" name="eglise_autre" type="text" maxlength="150">
-  </div>
-
-  <div class="field">
-    <label for="fonction_mouvement">Fonction dans le mouvement <span class="optional">(facultatif)</span></label>
-    <input id="fonction_mouvement" name="fonction_mouvement" type="text" maxlength="100" list="liste-fonctions" aria-describedby="hint-fonction">
-    <datalist id="liste-fonctions">
-      <option value="Membre"></option>
-      <option value="Responsable de groupe"></option>
-      <option value="Responsable adjoint"></option>
-      <option value="Secrétaire"></option>
-      <option value="Trésorier"></option>
-      <option value="Chargé de la louange"></option>
-      <option value="Chargé de l'évangélisation"></option>
-      <option value="Chargé de la communication"></option>
-    </datalist>
-    <p class="hint" id="hint-fonction">Laissez vide si vous n'avez pas de fonction particulière.</p>
-  </div>
-
-  <!-- Baptême -->
-  <fieldset class="field field--choices" id="fs-baptise">
-    <legend>Êtes-vous baptisé(e) ? <span class="req" aria-hidden="true">*</span></legend>
-    <div class="choices">
-      <label class="choice"><input type="radio" name="baptise" value="oui" required><span>Oui</span></label>
-      <label class="choice"><input type="radio" name="baptise" value="non"><span>Non</span></label>
-      <label class="choice"><input type="radio" name="baptise" value="en_preparation"><span>En préparation</span></label>
-      <label class="choice"><input type="radio" name="baptise" value="non_precise"><span>Je préfère ne pas répondre</span></label>
-    </div>
-  </fieldset>
-
-  <!-- Date de baptême (si baptisé) -->
-  <div class="field" id="bloc-date-bapteme" hidden>
-    <label for="date_bapteme">Date de votre baptême <span class="optional">(facultatif)</span></label>
-    <input id="date_bapteme" name="date_bapteme" type="date">
-    <p class="hint">Laissez vide si vous ne vous en souvenez plus.</p>
-  </div>
-
-  <!-- Date d'arrivée dans le mouvement -->
-  <div class="field">
-    <label for="date_arrivee">Date d'arrivée dans le mouvement <span class="optional">(facultatif)</span></label>
-    <input id="date_arrivee" name="date_arrivee" type="date" aria-describedby="hint-date-arrivee">
-    <p class="hint" id="hint-date-arrivee">Même approximative, indiquez l'année de votre première venue si vous ne connaissez pas la date exacte.</p>
-  </div>
-
-  <div class="field">
-    <label for="niveau_etudes">Niveau d'études <span class="req" aria-hidden="true">*</span></label>
-    <select id="niveau_etudes" name="niveau_etudes" required>
-      <option value="">Choisissez</option>
-      <option value="aucun">Aucun</option>
-      <option value="primaire">Primaire</option>
-      <option value="college">Collège (1er cycle)</option>
-      <option value="lycee">Lycée (2nd cycle)</option>
-      <option value="bac">Baccalauréat</option>
-      <option value="bac_2">BAC +2 (BTS, DUT…)</option>
-      <option value="licence">Licence (BAC +3)</option>
-      <option value="master">Master (BAC +5)</option>
-      <option value="doctorat">Doctorat</option>
-      <option value="formation_pro">Formation professionnelle</option>
-      <option value="autre">Autre</option>
-    </select>
-  </div>
-
-  <fieldset class="field field--choices" id="fs-situation_professionnelle">
-    <legend>Situation professionnelle <span class="req" aria-hidden="true">*</span></legend>
-    <div class="choices choices--grid">
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="eleve" required><span>Élève</span></label>
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="etudiant"><span>Étudiant(e)</span></label>
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="salarie"><span>Salarié(e)</span></label>
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="entrepreneur"><span>Entrepreneur(e)</span></label>
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="sans_emploi"><span>Sans emploi</span></label>
-      <label class="choice"><input type="radio" name="situation_professionnelle" value="autre"><span>Autre</span></label>
-    </div>
-  </fieldset>
-
-  <div class="field" id="bloc-situation-autre" hidden>
-    <label for="situation_professionnelle_autre">Précisez votre situation <span class="req" aria-hidden="true">*</span></label>
-    <input id="situation_professionnelle_autre" name="situation_professionnelle_autre" type="text" maxlength="100">
-  </div>
-
-  <div class="field">
-    <label for="profession">Profession <span class="optional" id="profession-mention">(facultatif)</span></label>
-    <input id="profession" name="profession" type="text" maxlength="100" autocomplete="organization-title" aria-describedby="hint-profession">
-    <p class="hint" id="hint-profession">Votre métier, ou le métier visé si vous êtes en formation.</p>
-  </div>
-</section>
-      <!-- ═══════════════ ÉTAPE 4 : FAMILLE ═══════════════ -->
-      <section class="step" data-step="4" aria-labelledby="step4-title" hidden>
-        <h2 class="step__title" id="step4-title" tabindex="-1">Famille</h2>
-
-        <fieldset class="field field--choices" id="fs-situation_matrimoniale">
-          <legend>Quelle est votre situation matrimoniale ? <span class="req" aria-hidden="true">*</span></legend>
-          <div class="choices choices--grid">
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="celibataire" required><span>Célibataire</span></label>
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="marie"><span>Marié(e)</span></label>
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="en_union"><span>En union</span></label>
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="divorce"><span>Divorcé(e)</span></label>
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="veuf"><span>Veuf / Veuve</span></label>
-            <label class="choice"><input type="radio" name="situation_matrimoniale" value="non_precise"><span>Je préfère ne pas répondre</span></label>
-          </div>
-        </fieldset>
-
-        <div class="subsection" id="bloc-conjoint" hidden>
-          <h3 class="subsection__title">Informations sur le conjoint</h3>
-
-          <div class="grid grid--2">
-            <div class="field">
-              <label for="conjoint_nom">Nom du conjoint <span class="req" aria-hidden="true">*</span></label>
-              <input id="conjoint_nom" name="conjoint_nom" type="text" maxlength="100">
-            </div>
-            <div class="field">
-              <label for="conjoint_prenoms">Prénoms du conjoint <span class="req" aria-hidden="true">*</span></label>
-              <input id="conjoint_prenoms" name="conjoint_prenoms" type="text" maxlength="150">
-            </div>
-          </div>
-
-          <div class="field">
-            <label for="conjoint_telephone">Téléphone du conjoint <span class="optional">(facultatif)</span></label>
-            <div class="phone">
-              <select id="conjoint_telephone_indicatif" name="conjoint_telephone_indicatif" data-fill="indicatifs" aria-label="Indicatif du téléphone du conjoint"></select>
-              <input id="conjoint_telephone" name="conjoint_telephone" type="tel" inputmode="tel" maxlength="20">
-            </div>
-          </div>
-
-          <fieldset class="field field--choices" id="fs-conjoint_membre">
-            <legend>Votre conjoint(e) appartient-il/elle à notre mouvement ? <span class="req" aria-hidden="true">*</span></legend>
-            <div class="choices">
-              <label class="choice"><input type="radio" name="conjoint_membre" value="oui"><span>Oui</span></label>
-              <label class="choice"><input type="radio" name="conjoint_membre" value="non"><span>Non</span></label>
-              <label class="choice"><input type="radio" name="conjoint_membre" value="non_precise"><span>Je préfère ne pas répondre</span></label>
-            </div>
-          </fieldset>
-
-          <div class="field" id="bloc-conjoint-eglise" hidden>
-            <label for="conjoint_eglise">Église ou communauté religieuse du conjoint <span class="req" aria-hidden="true">*</span></label>
-            <input id="conjoint_eglise" name="conjoint_eglise" type="text" maxlength="150">
-          </div>
-        </div>
-
-        <fieldset class="field field--choices" id="fs-a_enfants">
-          <legend>Avez-vous des enfants ? <span class="req" aria-hidden="true">*</span></legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="a_enfants" value="oui" required><span>Oui</span></label>
-            <label class="choice"><input type="radio" name="a_enfants" value="non"><span>Non</span></label>
-            <label class="choice"><input type="radio" name="a_enfants" value="non_precise"><span>Je préfère ne pas répondre</span></label>
-          </div>
-        </fieldset>
-
-        <div class="subsection" id="bloc-enfants" hidden>
-          <div class="subsection__head">
-            <h3 class="subsection__title">Vos enfants</h3>
-            <p class="counter" id="enfants-compteur" aria-live="polite">0 enfant sur 12 maximum</p>
-          </div>
-          <div id="liste-enfants" class="children-list"></div>
-          <button type="button" class="btn btn--outline" id="btn-ajouter-enfant">+ Ajouter un enfant</button>
-        </div>
-
-        <template id="tpl-enfant">
-          <fieldset class="child-card" data-child>
-            <legend class="child-card__title">Enfant <span data-child-index>1</span></legend>
-            <div class="grid grid--2">
-              <div class="field">
-                <label data-label-for="nom">Nom <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" data-field="nom" maxlength="100" required>
-              </div>
-              <div class="field">
-                <label data-label-for="prenoms">Prénoms <span class="req" aria-hidden="true">*</span></label>
-                <input type="text" data-field="prenoms" maxlength="150" required>
-              </div>
-              <div class="field">
-                <label data-label-for="date_naissance">Date de naissance <span class="req" aria-hidden="true">*</span></label>
-                <input type="date" data-field="date_naissance" required>
-              </div>
-              <div class="field">
-                <label data-label-for="niveau_scolaire">Niveau scolaire <span class="req" aria-hidden="true">*</span></label>
-                <select data-field="niveau_scolaire" required>
-                  <option value="">Choisissez</option>
-                  <option value="non_scolarise">Non scolarisé</option>
-                  <option value="prescolaire">Préscolaire</option>
-                  <option value="primaire">Primaire</option>
-                  <option value="college">Collège</option>
-                  <option value="lycee">Lycée</option>
-                  <option value="formation_pro">Formation professionnelle</option>
-                  <option value="superieur">Enseignement supérieur</option>
-                  <option value="autre">Autre</option>
-                </select>
-              </div>
-            </div>
-            <button type="button" class="btn btn--danger-ghost btn--sm" data-remove-child>Supprimer cet enfant</button>
-          </fieldset>
-        </template>
-      </section>
-
-      <!-- ═══════════════ ÉTAPE 5 : TUTELLE ═══════════════ -->
-      <section class="step" data-step="5" aria-labelledby="step5-title" hidden>
-        <h2 class="step__title" id="step5-title" tabindex="-1">Tutelle</h2>
-
-        <fieldset class="field field--choices" id="fs-sous_tutelle">
-          <legend>Êtes-vous actuellement sous tutelle ? <span class="req" aria-hidden="true">*</span></legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="sous_tutelle" value="oui" required><span>Oui</span></label>
-            <label class="choice"><input type="radio" name="sous_tutelle" value="non"><span>Non</span></label>
-            <label class="choice"><input type="radio" name="sous_tutelle" value="non_precise"><span>Je préfère ne pas répondre</span></label>
-          </div>
-        </fieldset>
-
-        <div class="subsection" id="bloc-tutelle" hidden>
-          <div class="field">
-            <label for="lien_tuteur">Lien avec le tuteur <span class="req" aria-hidden="true">*</span></label>
-            <select id="lien_tuteur" name="lien_tuteur">
-              <option value="">Choisissez</option>
-              <option value="parent">Parent</option>
-              <option value="famille">Membre de la famille</option>
-              <option value="responsable_legal">Responsable légal</option>
-              <option value="autre">Autre</option>
-            </select>
-          </div>
-          <div class="field" id="bloc-lien-autre" hidden>
-            <label for="lien_tuteur_autre">Précisez le lien <span class="req" aria-hidden="true">*</span></label>
-            <input id="lien_tuteur_autre" name="lien_tuteur_autre" type="text" maxlength="100">
-          </div>
-        </div>
-
-        <div class="subsection subsection--highlight" id="bloc-mineur" hidden>
-          <h3 class="subsection__title">Accord de votre parent ou responsable légal</h3>
-          <p class="subsection__intro">Comme vous avez moins de 18 ans, nous avons besoin des coordonnées d'un parent ou responsable légal. Nous pourrons le contacter pour confirmer son accord.</p>
-
-          <div class="field">
-            <label for="responsable_nom_complet">Nom et prénoms du parent ou responsable <span class="req" aria-hidden="true">*</span></label>
-            <input id="responsable_nom_complet" name="responsable_nom_complet" type="text" maxlength="200">
-          </div>
-
-          <div class="field">
-            <label for="responsable_telephone">Téléphone du parent ou responsable <span class="req" aria-hidden="true">*</span></label>
-            <div class="phone">
-              <select id="responsable_telephone_indicatif" name="responsable_telephone_indicatif" data-fill="indicatifs" aria-label="Indicatif du téléphone du parent ou responsable"></select>
-              <input id="responsable_telephone" name="responsable_telephone" type="tel" inputmode="tel" maxlength="20">
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="checkbox">
-              <input type="checkbox" id="consentement_parental" name="consentement_parental">
-              <span>Je confirme que mon parent ou responsable légal a pris connaissance de ce recensement et qu'il est d'accord. <span class="req" aria-hidden="true">*</span></span>
-            </label>
-          </div>
-        </div>
-
-        <p class="hint" id="info-pas-de-mineur">Si vous n'êtes pas concerné(e) par une tutelle, choisissez « Non » puis continuez.</p>
-      </section>
-
-      <!-- ═══════════════ ÉTAPE 6 : CONFIRMATION ═══════════════ -->
-      <section class="step" data-step="6" aria-labelledby="step6-title" hidden>
-        <h2 class="step__title" id="step6-title" tabindex="-1">Vérification et envoi</h2>
-
-        <div class="recap" id="recap" aria-live="polite"></div>
-
-        <div class="privacy-notice" id="notice-confidentialite">
-          <h3 class="privacy-notice__title">Vos données et vos droits</h3>
-          <dl class="privacy-notice__list">
-            <dt>Pourquoi ce recensement</dt>
-            <dd>Connaître les jeunes du mouvement pour mieux les accompagner sur les plans spirituel, familial, scolaire et professionnel, et organiser nos activités.</dd>
-
-            <dt>Comment vos données sont utilisées</dt>
-            <dd>Uniquement pour l'accompagnement des jeunes, l'organisation des activités et des statistiques internes. Elles ne sont jamais vendues ni utilisées à des fins publicitaires.</dd>
-
-            <dt>Qui peut les consulter</dt>
-            <dd>Seuls les responsables désignés par le mouvement, avec un compte personnel sécurisé. Chaque consultation et chaque modification est enregistrée.</dd>
-
-            <dt>Corriger vos informations</dt>
-            <dd>Écrivez à l'adresse indiquée dans la politique de confidentialité en précisant vos nom, prénoms et date de naissance. La correction est faite sous 30 jours.</dd>
-
-            <dt>Supprimer vos informations</dt>
-            <dd>Faites la demande à la même adresse. Votre dossier et celui de vos enfants sont supprimés sous 30 jours, et vous recevez une confirmation.</dd>
-          </dl>
-          <p><a href="confidentialite.html" target="_blank" rel="noopener">Lire la politique de confidentialité complète</a> (s'ouvre dans un nouvel onglet)</p>
-        </div>
-
-        <div class="field">
-          <label class="checkbox checkbox--strong">
-            <input type="checkbox" id="consentement_confidentialite" name="consentement_confidentialite" required>
-            <span>J'ai lu la politique de confidentialité et j'accepte. <span class="req" aria-hidden="true">*</span></span>
-          </label>
-        </div>
-
-        <div class="field">
-          <div id="turnstile-container" class="turnstile"></div>
-          <p class="hint">Cette vérification protège le formulaire contre les envois automatiques.</p>
-        </div>
-      </section>
-
-      <div class="form-nav">
-        <button type="button" class="btn btn--ghost" id="btn-precedent" hidden>Précédent</button>
-        <button type="button" class="btn btn--primary" id="btn-suivant">Continuer</button>
-        <button type="submit" class="btn btn--success" id="btn-envoyer" hidden>
-          <span class="btn__label">Envoyer mon recensement</span>
-          <span class="spinner" aria-hidden="true"></span>
-        </button>
       </div>
+    </section>
 
-      <div id="submit-status" class="sr-only" role="status" aria-live="assertive"></div>
-    </form>
+    <!-- FAQ -->
+    <section class="section" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section__head section__head--center">
+          <span class="kicker">Besoin d'aide ?</span>
+          <h2 class="section__title" id="faq-title">Questions fréquentes</h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>Combien de temps prend le formulaire ?</summary>
+            <p>Environ 5 minutes, en 6 étapes courtes.</p>
+          </details>
+          <details>
+            <summary>Puis-je revenir en arrière ?</summary>
+            <p>Oui, à tout moment avant l'envoi final, en cliquant sur « Précédent » ou sur une étape déjà validée.</p>
+          </details>
+          <details>
+            <summary>Que faites-vous de mes données ?</summary>
+            <p>Vos informations sont utilisées uniquement pour l'accompagnement des jeunes et l'organisation des activités du MEJ EBPE. Elles ne sont jamais vendues ni utilisées à des fins publicitaires. <a href="confidentialite.html">Lire la politique de confidentialité complète</a>.</p>
+          </details>
+          <details>
+            <summary>Je suis mineur(e), que faire ?</summary>
+            <p>À l'étape « Tutelle », nous vous demanderons les coordonnées d'un parent ou responsable légal et son accord. Le formulaire vous guidera automatiquement.</p>
+          </details>
+        </div>
+
+        <div class="final container" style="max-width:780px">
+          <h2>Prêt(e) à rejoindre le recensement ?</h2>
+          <p>Cela ne prend que quelques minutes.</p>
+          <a class="btn btn--green" href="formulaire.html">Commencer maintenant</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="footer">
     <p><a href="confidentialite.html">Politique de confidentialité</a></p>
+    <p class="footer__copy">© <span id="year"></span> MEJ EBPE · Mouvement de l'Enfance et de la Jeunesse</p>
   </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
