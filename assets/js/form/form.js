@@ -1,6 +1,4 @@
-/* ============================================
-   FORM.JS — Logique du formulaire de recensement
-   ============================================ */
+/* FORM.JS — Logique du formulaire de recensement  */
 
 const TOTAL_STEPS = 6;
 const MAX_CHILDREN = 12;
@@ -19,6 +17,7 @@ const DATA = {
     "Ivoirienne", "Française", "Sénégalaise", "Malienne", "Burkinabè",
     "Guinéenne", "Béninoise", "Togolaise", "Nigériane", "Ghanéenne",
     "Camerounaise", "Congolaise (RDC)", "Congolaise (Brazzaville)",
+    "Francaise","Italienne",
     "Tchadienne", "Gabonaise", "Marocaine", "Algérienne", "Tunisienne",
     "Autre",
   ],
@@ -41,6 +40,7 @@ const DATA = {
     { code: "+213", label: "+213 (Algérie)" },
     { code: "+216", label: "+216 (Tunisie)" },
     { code: "+33", label: "+33 (France)" },
+    { code: "+33", label: "+11 (Italie)" },
     { code: "+32", label: "+32 (Belgique)" },
     { code: "+1", label: "+1 (USA/Canada)" },
   ],
